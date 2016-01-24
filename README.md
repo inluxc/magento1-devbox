@@ -7,7 +7,6 @@ Install VirtualBox 5.x
 Install Vagrant 1.7.x
 Install the vagrant-hostmanager plugin with vagrant plugin install vagrant-hostmanager
 
-
 Vagrant
 - Virtual Box 5.0
 - Ubuntu Trusty 14.04 LTS x64
