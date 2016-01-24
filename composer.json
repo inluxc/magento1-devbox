@@ -1,0 +1,85 @@
+{
+  "name": "inluxc/magento1-devbox",
+  "description": "Magento 1 Development Box",
+  "license": "GPL-2.0",
+  "type": "project",
+  "keywords": [
+    "magento"
+  ],
+  "require": {
+    "php": ">=5.3",
+    "aoepeople/composer-installers": "0.0.1",
+    "tugagento/magento-mirror": "1.9.2.3"
+  },
+  "minimum-stability": "stable",
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "tugagento/magento-mirror",
+        "version": "1.9.2.3",
+        "type": "magento-source",
+        "dist": {
+          "url": "https://github.com/tugagento/magento-mirror/raw/master/magento-1.9.2.3.tar.gz",
+          "type": "tar"
+        }
+      }
+    },
+    {
+      "type": "composer",
+      "url": "http://packages.firegento.com"
+    }
+  ],
+  "authors": [
+    {
+      "name": "Fúlvio Carvalhido",
+      "email": "inluxc@gmail.com"
+    }
+  ],
+  "extra": {
+    "installer-paths": {
+      "htdocs": [
+        "type:magento-source"
+      ],
+      ".modman/{$name}/": [
+        "type:magento-module"
+      ]
+    }
+  },
+  "scripts": {
+    "pre-install-cmd": [
+      "bash < <(curl -s -L https://raw.github.com/colinmollenhour/modman/master/modman-installer)",
+      "source ~/.profile",
+      "mkdir -p .modman",
+      "echo 'htdocs/' > .modman/.basedir",
+      "mkdir -p dev/storage/etc"
+    ],
+    "post-install-cmd": [
+      "mv ./htdocs/var ./dev/storage/var",
+      "mv ./htdocs/media ./dev/storage/media"
+    ],
+    "post-update-cmd": [
+      "find ./htdocs -type l -exec unlink {} \\;",
+      "find ./vendor -type d -name \".git\" -exec rm -rf {} \\;"
+    ],
+    "reset-symlinks": [
+      "find . -type l -exec unlink {} \\;",
+      "ln -sf dev/storage storage",
+      "ln -sf storage/media htdocs/media",
+      "ln -sf storage/var htdocs/var",
+      "ln -sf storage/sitemap htdocs/sitemap",
+      "ln -sf storage/etc/local.xml htdocs/app/etc/local.xml",
+      "cd .modman && modman deploy-all"
+    ],
+    "fix-permitions":[
+      "find htdocs/ -type f -exec chmod 400 {} \\;",
+      "find htdocs/ -type d -exec chmod 500 {} \\;",
+      "find htdocs/var/ -type f -exec chmod 600 {} \\;",
+      "find htdocs/media/ -type f -exec chmod 600 {} \\;",
+      "find htdocs/var/ -type d -exec chmod 700 {} \\;",
+      "find htdocs/media/ -type d -exec chmod 700 {} \\;",
+      "chmod 700 htdocs/includes",
+      "chmod 600 htdocs/includes/config.php"
+    ]
+  }
+}
