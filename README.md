@@ -12,7 +12,7 @@ Vagrant
 
 Composer
 - Magento Latest
-- 
+
 
 
 This box is based in Daniel Sousa Magento Skeleton: https://github.com/DanielSousa/magento1-skeleton
